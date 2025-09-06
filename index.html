@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Registro de Trabajos - Gestion Profesional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #34a853;
+            --accent-color: #fbbc04;
+            --danger-color: #ea4335;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-bottom: 70px; /* Espacio para botón flotante */
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header h1 {
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            font-size: 1.5rem;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        .dashboard {
+            padding: 1rem 0;
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease;
+            border-left: 5px solid;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-card:active {
+            transform: scale(0.98);
+        }
+        
+        .stats-card.primary {
+            border-left-color: var(--primary-color);
+        }
+        
+        .stats-card.success {
+            border-left-color: var(--secondary-color);
+        }
+        
+        .stats-card.warning {
+            border-left-color: var(--accent-color);
+        }
+        
+        .stats-card.danger {
+            border-left-color: var(--danger-color);
+        }
+        
+        .stats-icon {
+            font-size: 2rem;
+            opacity: 0.8;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+        }
+        
+        .stats-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0.3rem 0;
+        }
+        
+        .stats-label {
+            color: #5f6368;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .stats-count {
+            color: #5f6368;
+            font-size: 0.8rem;
+            margin-top: -0.2rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 0.8rem 1rem;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header h5 {
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #dadce0;
+            padding: 0.8rem;
+            font-size: 1rem;
+            height: auto;
+            margin-bottom: 0.8rem;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn {
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            margin: 0.2rem;
+        }
+        
+        .btn:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1765cc;
+        }
+        
+        .btn-success {
+            background-color: var(--secondary-color);
+            border: none;
+        }
+        
+        .btn-success:hover {
+            background-color: #2d9249;
+        }
+        
+        .btn-warning {
+            background-color: var(--accent-color);
+            border: none;
+            color: var(--dark-color);
+        }
+        
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            border: none;
+        }
+        
+        .btn-danger:hover {
+            background-color: #d33b2c;
+        }
+        
+        .btn-sm {
+            padding: 0.5rem 0.8rem;
+            font-size: 0.85rem;
+        }
+        
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 0.85rem;
+        }
+        
+        .table thead th {
+            background-color: #f1f3f4;
+            border: none;
+            color: #5f6368;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            padding: 0.8rem;
+            white-space: nowrap;
+        }
+        
+        .table tbody td {
+            padding: 0.8rem;
+            vertical-align: middle;
+            border-color: #e0e0e0;
+        }
+        
+        .table tbody tr:active {
+            background-color: #f0f0f0;
+        }
+        
+        .status-badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+        
+        .status-pending {
+            background-color: #fef7e0;
+            color: #b06000;
+        }
+        
+        .status-paid {
+            background-color: #e6f4ea;
+            color: #1e8e3e;
+        }
+        
+        .status-cancelled {
+            background-color: #e3f2fd;
+            color: #0d47a1;
+        }
+        
+        .action-buttons .btn {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.8rem;
+            margin: 0.1rem;
+        }
+        
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+        }
+        
+        .search-box {
+            position: relative;
+            margin-bottom: 0.8rem;
+        }
+        
+        .search-box .form-control {
+            padding-left: 2.5rem;
+            border-radius: 25px;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #5f6368;
+        }
+        
+        .filter-section {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 250px;
+            margin-top: 1rem;
+        }
+        
+        /* Botón flotante para agregar trabajo rápido */
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-size: 1.5rem;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .fab:active {
+            transform: scale(0.9);
+        }
+        
+        /* Mejoras para móviles */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem 0;
+            }
+            
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .header p {
+                font-size: 0.85rem;
+            }
+            
+            .stats-card {
+                padding: 1rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .stats-icon {
+                font-size: 1.5rem;
+                right: 0.8rem;
+                top: 0.8rem;
+            }
+            
+            .stats-value {
+                font-size: 1.5rem;
+            }
+            
+            .card {
+                margin-bottom: 0.8rem;
+            }
+            
+            .card-header {
+                padding: 0.6rem 0.8rem;
+            }
+            
+            .card-header h5 {
+                font-size: 0.9rem;
+            }
+            
+            .form-control, .form-select {
+                padding: 0.7rem;
+                font-size: 0.95rem;
+            }
+            
+            .btn {
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .table {
+                font-size: 0.8rem;
+            }
+            
+            .table thead th {
+                padding: 0.6rem;
+                font-size: 0.7rem;
+            }
+            
+            .table tbody td {
+                padding: 0.6rem;
+            }
+            
+            .action-buttons .btn {
+                padding: 0.3rem 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .filter-section {
+                padding: 0.8rem;
+            }
+            
+            .chart-container {
+                height: 200px;
+            }
+            
+            .fab {
+                width: 56px;
+                height: 56px;
+                font-size: 1.3rem;
+            }
+        }
+        
+        /* Animaciones suaves */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Notificaciones móviles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            left: 20px;
+            z-index: 9999;
+            border-radius: 8px;
+            padding: 1rem;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Modal optimizado para móviles */
+        .modal-dialog {
+            margin: 1rem;
+        }
+        
+        .modal-content {
+            border-radius: 12px;
+        }
+        
+        .modal-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .modal-body {
+            padding: 1rem;
+        }
+        
+        .modal-footer {
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h1><i class="bi bi-clipboard-check me-2"></i>Mis Trabajos</h1>
+                    <p>Gestión profesional desde tu celular</p>
+                </div>
+                <div class="col-4 text-end">
+                    <div class="dropdown">
+                        <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i> Menú
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="#" id="exportBtn"><i class="bi bi-download me-2"></i> Exportar a Excel</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="clearDataBtn"><i class="bi bi-trash me-2"></i> Limpiar todo</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Dashboard -->
+    <section class="dashboard">
+        <div class="container">
+            <!-- Stats Cards -->
+            <div class="row">
+                <div class="col-6">
+                    <div class="stats-card primary">
+                        <div>
+                            <div class="stats-label">Total Trabajos</div>
+                            <div class="stats-value" id="totalJobs">0</div>
+                        </div>
+                        <div class="stats-icon text-primary">
+                            <i class="bi bi-clipboard-data"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="stats-card success">
+                        <div>
+                            <div class="stats-label">Ingresos</div>
+                            <div class="stats-value" id="totalEarnings">$0</div>
+                        </div>
+                        <div class="stats-icon text-success">
+                            <i class="bi bi-currency-dollar"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="stats-card warning">
+                        <div>
+                            <div class="stats-label">Pendientes</div>
+                            <div class="stats-value" id="pendingEarnings">$0</div>
+                            <div class="stats-count" id="pendingCount">0</div>
+                        </div>
+                        <div class="stats-icon text-warning">
+                            <i class="bi bi-hourglass-split"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="stats-card danger">
+                        <div>
+                            <div class="stats-label">Entregar</div>
+                            <div class="stats-value" id="cancelledJobs">0</div>
+                        </div>
+                        <div class="stats-icon text-danger">
+                            <i class="bi bi-truck"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="row mb-3">
+                <div class="col-6">
+                    <button class="btn btn-primary w-100" onclick="scrollToForm()">
+                        <i class="bi bi-plus-circle me-2"></i>Agregar Trabajo
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-success w-100" id="exportBtn2">
+                        <i class="bi bi-download me-2"></i>Exportar
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Add Job Form -->
+            <div class="card" id="jobFormCard">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Nuevo Trabajo</h5>
+                    <button class="btn btn-sm btn-outline-secondary" id="toggleForm">
+                        <i class="bi bi-chevron-up"></i>
+                    </button>
+                </div>
+                <div class="card-body" id="jobForm">
+                    <form id="addJobForm">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="jobTitle" class="form-label">Título del Trabajo</label>
+                                <input type="text" class="form-control" id="jobTitle" placeholder="Ej: Diseño web" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="clientName" class="form-label">Cliente</label>
+                                <input type="text" class="form-control" id="clientName" placeholder="Nombre del cliente" required>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="jobDate" class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="jobDate" required>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="jobPrice" class="form-label">Precio ($)</label>
+                                <input type="number" class="form-control" id="jobPrice" placeholder="0.00" step="0.01" min="0" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="jobStatus" class="form-label">Estado</label>
+                                <select class="form-select" id="jobStatus" required>
+                                    <option value="pending">Pendiente</option>
+                                    <option value="paid">Pagado</option>
+                                    <option value="cancelled">Por entregar</option>
+                                </select>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="jobDescription" class="form-label">Notas (opcional)</label>
+                                <textarea class="form-control" id="jobDescription" rows="2" placeholder="Detalles..."></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bi bi-save me-2"></i>Guardar Trabajo
+                                </button>
+                                <button type="reset" class="btn btn-outline-secondary w-100 mt-2">
+                                    <i class="bi bi-arrow-clockwise me-2"></i>Limpiar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Filters and Search -->
+            <div class="filter-section">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="search-box">
+                            <i class="bi bi-search"></i>
+                            <input type="text" class="form-control" id="searchInput" placeholder="Buscar trabajos...">
+                        </div>
+                    </div>
+                    <div class="col-6 mt-2">
+                        <select class="form-select" id="statusFilter">
+                            <option value="all">Todos</option>
+                            <option value="pending">Pendientes</option>
+                            <option value="paid">Pagados</option>
+                            <option value="cancelled">Por entregar</option>
+                        </select>
+                    </div>
+                    <div class="col-6 mt-2">
+                        <select class="form-select" id="sortFilter">
+                            <option value="date-desc">Recientes</option>
+                            <option value="date-asc">Antiguos</option>
+                            <option value="price-desc">Mayor $</option>
+                            <option value="price-asc">Menor $</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Jobs Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i>Mis Trabajos</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Cliente</th>
+                                    <th>$</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="jobsTableBody">
+                                <!-- Jobs will be dynamically added here -->
+                            </tbody>
+                        </table>
+                        <div id="emptyState" class="text-center py-5" style="display: none;">
+                            <i class="bi bi-inbox fs-1 text-muted"></i>
+                            <p class="mt-3 text-muted">No hay trabajos registrados</p>
+                            <button class="btn btn-primary" onclick="scrollToForm()">
+                                <i class="bi bi-plus-circle me-2"></i>Agregar primero
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts Section -->
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="bi bi-pie-chart me-2"></i>Resumen</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="statusChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">&copy; 2025 Sistema de Registro</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Botón flotante -->
+    <button class="fab" id="fabButton" onclick="scrollToForm()">
+        <i class="bi bi-plus-lg"></i>
+    </button>
+    
+    <!-- Edit Job Modal -->
+    <div class="modal fade" id="editJobModal" tabindex="-1" aria-labelledby="editJobModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editJobModalLabel">Editar Trabajo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editJobForm">
+                        <input type="hidden" id="editJobId">
+                        <div class="mb-3">
+                            <label for="editJobTitle" class="form-label">Título</label>
+                            <input type="text" class="form-control" id="editJobTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClientName" class="form-label">Cliente</label>
+                            <input type="text" class="form-control" id="editClientName" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label for="editJobDate" class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="editJobDate" required>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="editJobPrice" class="form-label">Precio ($)</label>
+                                <input type="number" class="form-control" id="editJobPrice" step="0.01" min="0" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editJobStatus" class="form-label">Estado</label>
+                            <select class="form-select" id="editJobStatus" required>
+                                <option value="pending">Pendiente</option>
+                                <option value="paid">Pagado</option>
+                                <option value="cancelled">Por entregar</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editJobDescription" class="form-label">Notas</label>
+                            <textarea class="form-control" id="editJobDescription" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveJobChanges">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Global variables
+        let jobs = JSON.parse(localStorage.getItem('jobs')) || [];
+        let jobIdCounter = parseInt(localStorage.getItem('jobIdCounter')) || 1;
+        let editJobModal;
+        let statusChart;
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Bootstrap components
+            editJobModal = new bootstrap.Modal(document.getElementById('editJobModal'));
+            
+            // Set today's date as default
+            document.getElementById('jobDate').valueAsDate = new Date();
+            
+            // Load jobs from localStorage
+            renderJobs();
+            updateStats();
+            initCharts();
+            
+            // Event listeners
+            document.getElementById('addJobForm').addEventListener('submit', addJob);
+            document.getElementById('saveJobChanges').addEventListener('click', saveJobChanges);
+            document.getElementById('toggleForm').addEventListener('click', toggleForm);
+            document.getElementById('searchInput').addEventListener('input', filterJobs);
+            document.getElementById('statusFilter').addEventListener('change', filterJobs);
+            document.getElementById('sortFilter').addEventListener('change', sortJobs);
+            document.getElementById('exportBtn').addEventListener('click', exportData);
+            document.getElementById('exportBtn2').addEventListener('click', exportData);
+            document.getElementById('clearDataBtn').addEventListener('click', clearAllData);
+            
+            // Colapsar formulario en móviles por defecto
+            if (window.innerWidth < 768) {
+                toggleForm();
+            }
+        });
+        
+        // Scroll to form
+        function scrollToForm() {
+            document.getElementById('jobFormCard').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+            // Expandir formulario si está colapsado
+            const form = document.getElementById('jobForm');
+            const icon = document.querySelector('#toggleForm i');
+            if (form.style.display === 'none') {
+                form.style.display = 'block';
+                icon.className = 'bi bi-chevron-up';
+            }
+        }
+        
+        // Add a new job
+        function addJob(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('jobTitle').value;
+            const client = document.getElementById('clientName').value;
+            const date = document.getElementById('jobDate').value;
+            const price = parseFloat(document.getElementById('jobPrice').value);
+            const status = document.getElementById('jobStatus').value;
+            const description = document.getElementById('jobDescription').value;
+            
+            const newJob = {
+                id: jobIdCounter++,
+                title,
+                client,
+                date,
+                price,
+                status,
+                description
+            };
+            
+            jobs.push(newJob);
+            saveJobs();
+            renderJobs();
+            updateStats();
+            updateCharts();
+            
+            // Reset form
+            document.getElementById('addJobForm').reset();
+            document.getElementById('jobDate').valueAsDate = new Date();
+            
+            // Show success message
+            showNotification('✅ Trabajo agregado', 'success');
+            
+            // Scroll to top to see the new job
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Save jobs to localStorage
+        function saveJobs() {
+            localStorage.setItem('jobs', JSON.stringify(jobs));
+            localStorage.setItem('jobIdCounter', jobIdCounter.toString());
+        }
+        
+        // Render jobs in the table
+        function renderJobs() {
+            const tableBody = document.getElementById('jobsTableBody');
+            const emptyState = document.getElementById('emptyState');
+            
+            tableBody.innerHTML = '';
+            
+            if (jobs.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            
+            jobs.forEach(job => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <strong>${job.title}</strong>
+                        <br><small class="text-muted">${formatDate(job.date)}</small>
+                    </td>
+                    <td>${job.client}</td>
+                    <td><strong>$${job.price.toFixed(0)}</strong></td>
+                    <td><span class="status-badge status-${job.status}">${getStatusText(job.status)}</span></td>
+                    <td class="action-buttons">
+                        <button class="btn btn-sm btn-primary" onclick="editJob(${job.id})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteJob(${job.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Format date for display
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            if (date.toDateString() === today.toDateString()) {
+                return 'Hoy';
+            } else if (date.toDateString() === yesterday.toDateString()) {
+                return 'Ayer';
+            } else {
+                const options = { day: 'numeric', month: 'short' };
+                return date.toLocaleDateString('es-ES', options);
+            }
+        }
+        
+        // Get status text in Spanish
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': 'Pendiente',
+                'paid': 'Pagado',
+                'cancelled': 'Por entregar'
+            };
+            return statusMap[status] || status;
+        }
+        
+        // Update dashboard statistics
+        function updateStats() {
+            const totalJobs = jobs.length;
+            const totalEarnings = jobs
+                .filter(job => job.status === 'paid')
+                .reduce((sum, job) => sum + job.price, 0);
+            const pendingJobs = jobs.filter(job => job.status === 'pending');
+            const pendingEarnings = pendingJobs.reduce((sum, job) => sum + job.price, 0);
+            const pendingCount = pendingJobs.length;
+            const cancelledJobs = jobs
+                .filter(job => job.status === 'cancelled')
+                .length;
+            
+            document.getElementById('totalJobs').textContent = totalJobs;
+            document.getElementById('totalEarnings').textContent = `$${totalEarnings.toFixed(0)}`;
+            document.getElementById('pendingEarnings').textContent = `$${pendingEarnings.toFixed(0)}`;
+            document.getElementById('pendingCount').textContent = pendingCount;
+            document.getElementById('cancelledJobs').textContent = cancelledJobs;
+        }
+        
+        // Initialize charts
+        function initCharts() {
+            // Status distribution chart
+            const statusCtx = document.getElementById('statusChart').getContext('2d');
+            statusChart = new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pendientes', 'Pagados', 'Por entregar'],
+                    datasets: [{
+                        data: [0, 0, 0],
+                        backgroundColor: [
+                            'rgba(251, 188, 4, 0.8)',
+                            'rgba(52, 168, 83, 0.8)',
+                            'rgba(227, 242, 253, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(251, 188, 4, 1)',
+                            'rgba(52, 168, 83, 1)',
+                            'rgba(227, 242, 253, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            updateCharts();
+        }
+        
+        // Update charts with current data
+        function updateCharts() {
+            // Update status chart
+            const pendingCount = jobs.filter(job => job.status === 'pending').length;
+            const paidCount = jobs.filter(job => job.status === 'paid').length;
+            const cancelledCount = jobs.filter(job => job.status === 'cancelled').length;
+            
+            statusChart.data.datasets[0].data = [pendingCount, paidCount, cancelledCount];
+            statusChart.update();
+        }
+        
+        // Edit a job
+        function editJob(id) {
+            const job = jobs.find(j => j.id === id);
+            if (!job) return;
+            
+            document.getElementById('editJobId').value = job.id;
+            document.getElementById('editJobTitle').value = job.title;
+            document.getElementById('editClientName').value = job.client;
+            document.getElementById('editJobDate').value = job.date;
+            document.getElementById('editJobPrice').value = job.price;
+            document.getElementById('editJobStatus').value = job.status;
+            document.getElementById('editJobDescription').value = job.description;
+            
+            editJobModal.show();
+        }
+        
+        // Save job changes
+        function saveJobChanges() {
+            const id = parseInt(document.getElementById('editJobId').value);
+            const jobIndex = jobs.findIndex(j => j.id === id);
+            
+            if (jobIndex === -1) return;
+            
+            jobs[jobIndex] = {
+                id,
+                title: document.getElementById('editJobTitle').value,
+                client: document.getElementById('editJobClientName').value,
+                date: document.getElementById('editJobDate').value,
+                price: parseFloat(document.getElementById('editJobPrice').value),
+                status: document.getElementById('editJobStatus').value,
+                description: document.getElementById('editJobDescription').value
+            };
+            
+            saveJobs();
+            renderJobs();
+            updateStats();
+            updateCharts();
+            editJobModal.hide();
+            
+            showNotification('✅ Trabajo actualizado', 'success');
+        }
+        
+        // Delete a job
+        function deleteJob(id) {
+            if (confirm('¿Eliminar este trabajo?')) {
+                jobs = jobs.filter(job => job.id !== id);
+                saveJobs();
+                renderJobs();
+                updateStats();
+                updateCharts();
+                
+                showNotification('🗑️ Trabajo eliminado', 'danger');
+            }
+        }
+        
+        // Toggle form visibility
+        function toggleForm() {
+            const form = document.getElementById('jobForm');
+            const icon = document.querySelector('#toggleForm i');
+            
+            if (form.style.display === 'none') {
+                form.style.display = 'block';
+                icon.className = 'bi bi-chevron-up';
+            } else {
+                form.style.display = 'none';
+                icon.className = 'bi bi-chevron-down';
+            }
+        }
+        
+        // Filter jobs based on search and status
+        function filterJobs() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            const filteredJobs = jobs.filter(job => {
+                const matchesSearch = job.title.toLowerCase().includes(searchTerm) || 
+                                    job.client.toLowerCase().includes(searchTerm) ||
+                                    (job.description && job.description.toLowerCase().includes(searchTerm));
+                const matchesStatus = statusFilter === 'all' || job.status === statusFilter;
+                
+                return matchesSearch && matchesStatus;
+            });
+            
+            renderFilteredJobs(filteredJobs);
+        }
+        
+        // Render filtered jobs
+        function renderFilteredJobs(filteredJobs) {
+            const tableBody = document.getElementById('jobsTableBody');
+            const emptyState = document.getElementById('emptyState');
+            
+            tableBody.innerHTML = '';
+            
+            if (filteredJobs.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            
+            filteredJobs.forEach(job => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <strong>${job.title}</strong>
+                        <br><small class="text-muted">${formatDate(job.date)}</small>
+                    </td>
+                    <td>${job.client}</td>
+                    <td><strong>$${job.price.toFixed(0)}</strong></td>
+                    <td><span class="status-badge status-${job.status}">${getStatusText(job.status)}</span></td>
+                    <td class="action-buttons">
+                        <button class="btn btn-sm btn-primary" onclick="editJob(${job.id})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteJob(${job.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Sort jobs
+        function sortJobs() {
+            const sortBy = document.getElementById('sortFilter').value;
+            
+            switch (sortBy) {
+                case 'date-desc':
+                    jobs.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    break;
+                case 'date-asc':
+                    jobs.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    break;
+                case 'price-desc':
+                    jobs.sort((a, b) => b.price - a.price);
+                    break;
+                case 'price-asc':
+                    jobs.sort((a, b) => a.price - b.price);
+                    break;
+            }
+            
+            renderJobs();
+        }
+        
+        // Format date for CSV export
+        function formatCsvDate(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+        
+        // Export data to CSV with improved Excel compatibility
+        function exportData() {
+            if (jobs.length === 0) {
+                showNotification('⚠️ No hay datos para exportar', 'warning');
+                return;
+            }
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "sep=,\n";
+            csvContent += "ID,Titulo,Cliente,Fecha,Precio,Estado,Notas\n";
+            
+            jobs.forEach(job => {
+                const escapeField = (field) => {
+                    if (field === null || field === undefined) return "";
+                    return `"${String(field).replace(/"/g, '""')}"`;
+                };
+                
+                const row = [
+                    job.id,
+                    escapeField(job.title),
+                    escapeField(job.client),
+                    formatCsvDate(job.date),
+                    job.price.toFixed(2),
+                    escapeField(getStatusText(job.status)),
+                    escapeField(job.description || "")
+                ].join(",");
+                
+                csvContent += row + "\n";
+            });
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `trabajos_${new Date().toLocaleDateString('es-ES').replace(/\//g, '-')}.csv`);
+            document.body.appendChild(link);
+            
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('📊 Datos exportados', 'success');
+        }
+        
+        // Clear all data
+        function clearAllData() {
+            if (confirm('¿Eliminar todos los trabajos? Esta acción no se puede deshacer.')) {
+                jobs = [];
+                jobIdCounter = 1;
+                saveJobs();
+                renderJobs();
+                updateStats();
+                updateCharts();
+                
+                showNotification('🗑️ Todos los datos eliminados', 'danger');
+            }
+        }
+        
+        // Show notification (mobile optimized)
+        function showNotification(message, type) {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(n => n.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification fade-in`;
+            
+            // Set background color based on type
+            const colors = {
+                'success': '#34a853',
+                'danger': '#ea4335',
+                'warning': '#fbbc04',
+                'info': '#1a73e8'
+            };
+            
+            notification.style.backgroundColor = colors[type] || colors.info;
+            notification.innerHTML = message;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(-20px)';
+                notification.style.transition = 'all 0.3s ease';
+                
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
